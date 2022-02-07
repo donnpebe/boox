@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  boox:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: dev
+    volumes:
+      - .:/opt/app/boox
+    ports:
+      - 8880:8880
+    links:
+      - db
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - boox_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: boox
+      POSTGRES_USER: developer
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+volumes:
+  boox_data:
